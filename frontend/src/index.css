@@ -3,13 +3,12 @@
 @tailwind utilities;
 
 body {
-	background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("https://github.com/burakorkmez/mern-chat-app/blob/master/frontend/public/bg.png?raw=true");
+	background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url("https://static.vecteezy.com/system/resources/previews/022/479/086/large_2x/system-artificial-intelligence-chatgpt-chat-bot-ai-technology-smart-robot-ai-chat-gpt-application-software-free-photo.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 }
 
-/* dark mode looking scrollbar */
 ::-webkit-scrollbar {
 	width: 8px;
 }

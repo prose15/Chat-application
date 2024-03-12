@@ -1,6 +1,6 @@
 import Conversation from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
-// import { getReceiverSocketId, io } from "../socket/socket.js";
+import { getReceiverSocketId, io } from "../socket/socket.js";
 
 export const sendMessage = async (req, res) => {
 	try {
@@ -27,19 +27,12 @@ export const sendMessage = async (req, res) => {
 		if (newMessage) {
 			conversation.messages.push(newMessage._id);
 		}
-
-		// await conversation.save();
-		// await newMessage.save();
-
-		// this will run in parallel
 		await Promise.all([conversation.save(), newMessage.save()]);
 
-		// SOCKET IO FUNCTIONALITY WILL GO HERE
-		// const receiverSocketId = getReceiverSocketId(receiverId);
-		// if (receiverSocketId) {
-		// 	// io.to(<socket_id>).emit() used to send events to specific client
-		// 	io.to(receiverSocketId).emit("newMessage", newMessage);
-		// }
+		const receiverSocketId = getReceiverSocketId(receiverId);
+		if (receiverSocketId) {
+			io.to(receiverSocketId).emit("newMessage", newMessage);
+		}
 
 		res.status(201).json(newMessage);
 	} catch (error) {
@@ -55,7 +48,7 @@ export const getMessages = async (req, res) => {
 
 		const conversation = await Conversation.findOne({
 			participants: { $all: [senderId, userToChatId] },
-		}).populate("messages"); // NOT REFERENCE BUT ACTUAL MESSAGES
+		}).populate("messages");
 
 		if (!conversation) return res.status(200).json([]);
 
